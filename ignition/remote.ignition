@@ -1,0 +1,10 @@
+{
+  "ignition": {
+    "version": "2.0.0",
+    "config": {
+      "replace": {
+        "source": "https://gist.githubusercontent.com/logicminds/e6d2308ef1c3a17044d6ba9d44e8af46/raw/ignition-config.json"
+      }
+    }
+  },
+}

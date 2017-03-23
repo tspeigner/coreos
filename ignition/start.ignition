@@ -1,10 +1,38 @@
 {
-    "ignition": {
-        "version": "2.0.0",
-        "config": {
-          "replace": {
-            "source": "https://gist.githubusercontent.com/logicminds/e6d2308ef1c3a17044d6ba9d44e8af46/raw/ignition-config.json"
+    "ignition": { "version": "2.0.0", },
+    "storage": {
+      "files": [{
+      "filesystem": "root",
+      "path": "/etc/hostname",
+      "mode": 420,
+      "contents": {"source:" "data:,tlscore1"}
+      }],
+      "filesystems": [{
+        "mount": {
+          "device": "/dev/sda",
+          "format": "ext4",
+          "create": {
+            "force": true,
+            "options": [ "--label=os_storage" ]
           }
         }
+      }],
+      "disks": [{
+          "device": "/dev/sdb"
+          "wipeTable": true,
+          "partitions": [{
+            "label": "os_storage",
+            "number": 1,
+            "size": 16384,
+            "start": 0
+          }]
+      }]
+    },
+    "systemd": {
+      "units": [{
+        "name": "var-lib-data.mount",
+        "enable": true,
+        "contents": "[Mount]\nWhat=/dev/sdb\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
+      }]
     }
 }
