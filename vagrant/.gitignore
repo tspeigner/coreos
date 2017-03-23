@@ -1,0 +1,9 @@
+# exclude system and security files
+*.DS_Store
+*.key
+
+# exclude VM's and VM Disks
+*.vdi
+*.qcow
+*.vmdk
+*.vmhd
