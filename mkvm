@@ -1,0 +1,16 @@
+#/bin/bash
+
+vBoxManage createvm --name "core_os" --register
+vBoxManage modifyvm "core_os" --memory 1024 --acpi on --boot1 dvd
+vBoxManage modifyvm "core_os" --nic1 bridged --bridgeadapter1 en0
+vBoxManage modifyvm "core_os" --ostype Linux
+
+VBoxManage createhd --filename ./core_os.vdi --size 10000
+VBoxManage storagectl "core_os" --name "IDE Controller" --add ide
+
+VBoxManage storageattach "core_os" --storagectl "IDE Controller"  \
+    --port 0 --device 0 --type hdd --medium ./core_os.vdi
+
+VBoxManage storageattach "core_os" --storagectl "IDE Controller" \
+    --port 1 --device 0 --type dvddrive --medium coreos_production_iso_image.iso
+

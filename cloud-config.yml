@@ -1,0 +1,54 @@
+#cloud-config
+
+#Add users and groups to the system
+
+#groups, randomly picked
+groups:
+  - docker
+  - coreos
+  - cloud-users
+
+#user(s)
+users:
+  - name: tommy
+  gecos: Tommy
+  primary-group: coreos
+  groups: users
+  ssh-import-id: tommy
+  passwd: $1$o0Hc8fP5$BQdGlcWv7K8o5/gSAiED5/
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  ssh-authorized-keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaU9WhUmp3DI/Rr5IXopQ3ER50rqJo3BHjTeQqzVNR4ErgKwXcv6R83N9BUbfpjZ1LeRIrpZAqVL9iHejSwQ2++lZVvz3QOmSNrttO/2QY5FfF2H7/BmMG/XsfV6HIfrqkpo80mcRJqKahoBV771PoxJad6pZGo141qcSnBnf8k9lYizCEn9N22pTKKH7Gz+uCbeUsIiyoSxf1Q67m1OQO7BZFOZksYmh9Y6SazPz53lS6QIB1XHsYVxvCdpcaKjE3zplpEpQQgJvdJCrD5vVdjUm241T/zqUsRhuow0jmQxzq4xXHMPG2nWR4QNL4HJOzsM7/YCkyRW5jI6LXAMr2+2F4BNucC892z8yBuS9vn5yqkJxPfalTQfiBtsEAenQ83+/pWREw82AJLT6xKW4/lPS7UX+ekzc3RK0njGHzZCxePG8hrtrOdB6OIQYKG+OLntP0+uaW7Amg0yNlMF0KCK6eVh6H8mtfblSbmaWRE0WUhXqYHpQqTsqfzRYKbfZ83oY+zyTTzhxBCB41m6Kw54KtuL1wDn6TEwuxAOtk6KCM9uRzwkmRcmR6VhUrnYzy9+jSQ7CDhs/mkIMTmhFjbAzjy3goo+mvItCawWFa29/HDJDlSjPNA/u+COPsck3w9bLi186XjLFOSvwKAPdRWfwlnsATD/yv328C94pHdw== tls_core_os
+
+
+manage-resolv-conf: true
+
+resolv_conf:
+  nameservers: ['8.8.4.4', '8.8.8.8']
+  searchdomains:
+    - speigner.home
+    - inf.puppet.vm
+  domain: puppet.vm
+  options:
+    rotate: true
+    timeout: 1
+
+packages:
+  - wget
+  - mlocate
+  - git
+  - docker
+
+package_upgrade: true
+
+mounts:
+ - [ sdc, /opt/data ]
+
+ mount_default_fields: [ None, None, "auto", "defaults,nofail", "0", "2" ]
+
+ power_state:
+ delay: "+30"
+ mode: reboot
+ message: Bye Bye, be right back
+ timeout: 30
+ condition: True
