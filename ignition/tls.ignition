@@ -1,0 +1,47 @@
+# Set ignition version number
+"ignition": { "version": "2.0.0"}
+
+# Disk setup
+"disks": [
+    {
+      "device": "/dev/vdb",
+      "wipeTable": true,
+      "partitions": [{ "label": "raid.1.1"}]
+    },
+    {
+      "device": "/dev/vdc",
+      "wipeTable": true,
+      "partitions": [{ "label": "raid.1.2"}]
+    }
+ ]
+# Create RAID stripe for two disks above
+"raid": [{
+  "devices": [
+      "/dev/disk/by-partlabel/raid.1.1",
+      "/dev/disk/by-partlable/raid.1.2"
+  ],
+  "level": "stripe",
+  "name": "data"
+}]
+
+# Do something with the filesystems
+"filesystems": [
+    {
+        "mount": {
+            "device": "/dev/md/data",
+            "format": "ext4",
+            "create": { "force": true }
+        },
+        "name": "our filesystem"
+    }
+  ]
+
+# create some files
+"files": [{
+    "filesystems": "our filesystem",
+    "path": "/config.json",
+    "mode": 292,
+    "contents": {
+        "source": "http://<uri>"
+    }
+}]
